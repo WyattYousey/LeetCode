@@ -11,21 +11,25 @@
  * @return {_Node}
  */
 var cloneGraph = function(node) {
-    let mapping = new Map();
+    if (!node) return null;
 
-    function dfs(curr) {
-        if (!curr) return null;
-        if (mapping.has(curr)) return mapping.get(curr);
+    const map = new Map();
+    const stack = [node];
 
-        let clone = new Node(curr.val);
-        mapping.set(curr, clone);
+    map.set(node, new Node(node.val));
 
-        for (let neighbor of curr.neighbors) {
-            clone.neighbors.push(dfs(neighbor));
+    while (stack.length) {
+        const curr = stack.pop();
+
+        for (const neighbor of curr.neighbors) {
+            if (!map.has(neighbor)) {
+                map.set(neighbor, new Node(neighbor.val));
+                stack.push(neighbor);
+            }
+
+            map.get(curr).neighbors.push(map.get(neighbor));
         }
-
-        return clone;
     }
 
-    return dfs(node);
+    return map.get(node);
 };
