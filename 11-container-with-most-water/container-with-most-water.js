@@ -8,13 +8,16 @@ var maxArea = function(height) {
 
     while (l < r) {
         const width = r - l;
-        maxArea = Math.max(maxArea, width * Math.min(height[l], height[r]));
+        let currArea = 0;
 
         if (height[l] < height[r]) {
+            currArea = width * height[l];
             l++;
         } else {
+            currArea = width * height[r];
             r--;
         }
+        maxArea = Math.max(maxArea, currArea);
     }
     return maxArea;
 };
